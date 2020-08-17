@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/32x32.ico?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/32x32.ico?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/16x16.ico?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/assets/32x32.ico?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="概述JavaScript 是一门复杂的语言。如果你是一名 JavaScript 开发人员，不管处于什么样的水平，都有必要了解 JavaScript 的基本概念。本文介绍了 12 个非常重要的 JavaScript 概念，但绝对不是说 JavaScript 开发人员只需要知道这些就可以了。">
+<meta name="keywords" content="JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="（转）理解这12个概念，让你的JavaScript开发更上一层楼">
+<meta property="og:url" content="http://hellojovy.com/JavaScript-12/index.html">
+<meta property="og:site_name" content="程序收纳">
+<meta property="og:description" content="概述JavaScript 是一门复杂的语言。如果你是一名 JavaScript 开发人员，不管处于什么样的水平，都有必要了解 JavaScript 的基本概念。本文介绍了 12 个非常重要的 JavaScript 概念，但绝对不是说 JavaScript 开发人员只需要知道这些就可以了。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-01T05:44:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="（转）理解这12个概念，让你的JavaScript开发更上一层楼">
+<meta name="twitter:description" content="概述JavaScript 是一门复杂的语言。如果你是一名 JavaScript 开发人员，不管处于什么样的水平，都有必要了解 JavaScript 的基本概念。本文介绍了 12 个非常重要的 JavaScript 概念，但绝对不是说 JavaScript 开发人员只需要知道这些就可以了。">
+
+
+
+
+
+
+  <link rel="canonical" href="http://hellojovy.com/JavaScript-12/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>（转）理解这12个概念，让你的JavaScript开发更上一层楼 | 程序收纳</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?78f30df6d38dd3bab6d88c9c5d807833";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">程序收纳</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">写给自己看的博客</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hellojovy.com/JavaScript-12/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="正月初五">
+      <meta itemprop="description" content="实践总结 知识梳理 读书笔记">
+      <meta itemprop="image" content="/assets/200x200.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程序收纳">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">（转）理解这12个概念，让你的JavaScript开发更上一层楼
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-01 13:44:05" itemprop="dateCreated datePublished" datetime="2019-03-01T13:44:05+08:00">2019-03-01</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/其他/" itemprop="url" rel="index"><span itemprop="name">其他</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <a href="/JavaScript-12/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/JavaScript-12/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>JavaScript 是一门复杂的语言。如果你是一名 JavaScript 开发人员，不管处于什么样的水平，都有必要了解 JavaScript 的基本概念。本文介绍了 12 个非常重要的 JavaScript 概念，但绝对不是说 JavaScript 开发人员只需要知道这些就可以了。<br><a id="more"></a></p>
+<h1 id="详述"><a href="#详述" class="headerlink" title="详述"></a>详述</h1><h2 id="1-变量赋值（值与引用）"><a href="#1-变量赋值（值与引用）" class="headerlink" title="1. 变量赋值（值与引用）"></a>1. 变量赋值（值与引用）</h2><p>JavaScript 总是按照值来给变量赋值。当指定的值是 JavaScript 的五种原始类型之一（即 Boolean、null、undefined、String 和 Number）时，将为变量分配实际的值。但是，当指定的值是 Array、Function 或 Object 时，将为变量分配内存的对象引用。</p>
+<p>在下面的代码段中，使用 var1 对 var2 赋值。由于 var1 是基本类型（String），因此 var2 的值等于 var1 的 String 值，但这个时候可以认为 var2 与 var1 完全不同。因此，重新为 var2 赋值对 var1 没有任何影响。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> var1 = <span class="string">'My string'</span>;</span><br><span class="line"><span class="keyword">let</span> var2 = var1;</span><br><span class="line">var2 = <span class="string">'My new string'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(var1);</span><br><span class="line"><span class="comment">// 'My string'</span></span><br><span class="line"><span class="built_in">console</span>.log(var2);</span><br><span class="line"><span class="comment">// 'My new string'</span></span><br></pre></td></tr></table></figure>
+<p>我们将它与对象赋值进行比较。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> var1 = &#123; <span class="attr">name</span>: <span class="string">'Jim'</span> &#125;</span><br><span class="line"><span class="keyword">let</span> var2 = var1;</span><br><span class="line">var2.name = <span class="string">'John'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(var1);</span><br><span class="line"><span class="comment">// &#123; name: 'John' &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(var2);</span><br><span class="line"><span class="comment">// &#123; name: 'John' &#125;</span></span><br></pre></td></tr></table></figure>
+<p>如果你期望它会像原始类型赋值那样，很可能会出问题！如果你创建了一个无意中会改变对象的函数，就会出现一些非预期的行为。</p>
+<h2 id="2-闭包"><a href="#2-闭包" class="headerlink" title="2. 闭包"></a>2. 闭包</h2><p>闭包是一种重要的 JavaScript 模式，可用于访问私有变量。在下面的示例中，createGreeter 返回一个匿名函数，这个函数可以访问参数 greeting（在这里是“Hello”）。在后续的调用中，sayHello 将有权访问这个 greeting！<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createGreeter</span>(<span class="params">greeting</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(greeting + <span class="string">', '</span> + name);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> sayHello = createGreeter(<span class="string">'Hello'</span>);</span><br><span class="line">sayHello(<span class="string">'Joe'</span>);</span><br><span class="line"><span class="comment">// Hello, Joe</span></span><br></pre></td></tr></table></figure></p>
+<p>在一个更真实的场景中，你可以设想一个初始化函数 apiConnect(apiKey)，它返回一些使用 API密钥的方法。在这种情况下，只需要提供一次 apiKey 即可。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">apiConnect</span>(<span class="params">apiKey</span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">get</span>(<span class="params">route</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> fetch(<span class="string">`<span class="subst">$&#123;route&#125;</span>?key=<span class="subst">$&#123;apiKey&#125;</span>`</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">post</span>(<span class="params">route, params</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> fetch(route, &#123;</span><br><span class="line">      method: <span class="string">'POST'</span>,</span><br><span class="line">      body: <span class="built_in">JSON</span>.stringify(params),</span><br><span class="line">        headers: &#123;</span><br><span class="line">          <span class="string">'Authorization'</span>: <span class="string">`Bearer <span class="subst">$&#123;apiKey&#125;</span>`</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> &#123; get, post &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> api = apiConnect(<span class="string">'my-secret-key'</span>);</span><br><span class="line"><span class="comment">// No need to include the apiKey anymore</span></span><br><span class="line">api.get(<span class="string">'http://www.example.com/get-endpoint'</span>);</span><br><span class="line">api.post(<span class="string">'http://www.example.com/post-endpoint'</span>, &#123; <span class="attr">name</span>: <span class="string">'Joe'</span> &#125;);</span><br></pre></td></tr></table></figure></p>
+<h2 id="3-解构"><a href="#3-解构" class="headerlink" title="3. 解构"></a>3. 解构</h2><p>JavaScript 参数解构是一种从对象中提取属性的常用方法。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">  name: <span class="string">'Joe'</span>,</span><br><span class="line">  food: <span class="string">'cake'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> &#123; name, food &#125; = obj;</span><br><span class="line"><span class="built_in">console</span>.log(name, food);</span><br><span class="line"><span class="comment">// 'Joe' 'cake'</span></span><br></pre></td></tr></table></figure></p>
+<p>如果需要以其他名称来提取属性，可以使用以下格式来指定它们。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">  name: <span class="string">'Joe'</span>,</span><br><span class="line">  food: <span class="string">'cake'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> &#123; <span class="attr">name</span>: myName, <span class="attr">food</span>: myFood &#125; = obj;</span><br><span class="line"><span class="built_in">console</span>.log(myName, myFood);</span><br><span class="line"><span class="comment">// 'Joe' 'cake'</span></span><br></pre></td></tr></table></figure></p>
+<p>在下面的示例中，解构被用来将 person 对象传给 introduce 函数。换句话说，解构可以（并且经常）直接用于提取传给函数的参数。如果你熟悉 React，可能已经见过这个！<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> person = &#123;</span><br><span class="line">  name: <span class="string">'Eddie'</span>,</span><br><span class="line">  age: <span class="number">24</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">introduce</span>(<span class="params">&#123; name, age &#125;</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`I'm <span class="subst">$&#123;name&#125;</span> and I'm <span class="subst">$&#123;age&#125;</span> years old!`</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(introduce(person));</span><br><span class="line"><span class="comment">// "I'm Eddie and I'm 24 years old!"</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="4-展开（spread）语法"><a href="#4-展开（spread）语法" class="headerlink" title="4. 展开（spread）语法"></a>4. 展开（spread）语法</h2><p>在下面的示例中，Math.max 不能直接接受 arr 数组，因为它的参数不是数组类型，但可以以数组中的各个元素作为参数。展开运算符… 可用于提取数组的各个元素。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">4</span>, <span class="number">6</span>, <span class="number">-1</span>, <span class="number">3</span>, <span class="number">10</span>, <span class="number">4</span>];</span><br><span class="line"><span class="keyword">const</span> max = <span class="built_in">Math</span>.max(...arr);</span><br><span class="line"><span class="built_in">console</span>.log(max);</span><br><span class="line"><span class="comment">// 10</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="5-变长参数（rest）语法"><a href="#5-变长参数（rest）语法" class="headerlink" title="5. 变长参数（rest）语法"></a>5. 变长参数（rest）语法</h2><p>你可以用它将传给函数的任意数量的参数放入数组中！<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myFunc</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(args[<span class="number">0</span>] + args[<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br><span class="line">myFunc(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line"><span class="comment">// 3</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="6-数组方法"><a href="#6-数组方法" class="headerlink" title="6. 数组方法"></a>6. 数组方法</h2><p>JavaScript 数组方法通常可以为你提供令人难以置信的优雅方式来执行所需的数据转换。作为 StackOverflow 的贡献者，我经常看到有关如何以这种或那种方式操纵对象数组的问题。这往往是数组方法的完美用例。</p>
+<h3 id="map、filter、reduce"><a href="#map、filter、reduce" class="headerlink" title="map、filter、reduce"></a>map、filter、reduce</h3><p>map：返回一个数组，其中每个元素都使用指定函数进行过转换。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>];</span><br><span class="line"><span class="keyword">const</span> mapped = arr.map(<span class="function"><span class="params">el</span> =&gt;</span> el + <span class="number">20</span>);</span><br><span class="line"><span class="built_in">console</span>.log(mapped);</span><br><span class="line"><span class="comment">// [21, 22, 23, 24, 25, 26]</span></span><br></pre></td></tr></table></figure></p>
+<p>filter：返回一个数组，只有当指定函数返回 true 时，相应的元素才会被包含在这个数组中。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>];</span><br><span class="line"><span class="keyword">const</span> filtered = arr.filter(<span class="function"><span class="params">el</span> =&gt;</span> el === <span class="number">2</span> || el === <span class="number">4</span>);</span><br><span class="line"><span class="built_in">console</span>.log(filtered);</span><br><span class="line"><span class="comment">// [2, 4]</span></span><br></pre></td></tr></table></figure></p>
+<p>reduce：基于给定函数累加值。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>];</span><br><span class="line"><span class="keyword">const</span> reduced = arr.reduce(<span class="function">(<span class="params">total, current</span>) =&gt;</span> total + current);</span><br><span class="line"><span class="built_in">console</span>.log(reduced);</span><br><span class="line"><span class="comment">// 21</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="find、findIndex、indexOf"><a href="#find、findIndex、indexOf" class="headerlink" title="find、findIndex、indexOf"></a>find、findIndex、indexOf</h3><p>find：返回与指定条件匹配的第一个实例，不会继续查找其他匹配的实例。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>];</span><br><span class="line"><span class="keyword">const</span> found = arr.find(<span class="function"><span class="params">el</span> =&gt;</span> el &gt; <span class="number">5</span>);</span><br><span class="line"><span class="built_in">console</span>.log(found);</span><br><span class="line"><span class="comment">// 6</span></span><br></pre></td></tr></table></figure></p>
+<p>虽然 5 之后的元素都符合条件，但只返回第一个匹配的元素。</p>
+<p>findIndex：这与 find 几乎完全相同，但不返回第一个匹配的元素，而是返回第一个匹配元素的索引。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="string">'Nick'</span>, <span class="string">'Frank'</span>, <span class="string">'Joe'</span>, <span class="string">'Frank'</span>];</span><br><span class="line"><span class="keyword">const</span> foundIndex = arr.findIndex(<span class="function"><span class="params">el</span> =&gt;</span> el === <span class="string">'Frank'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(foundIndex);</span><br><span class="line"><span class="comment">// 1</span></span><br></pre></td></tr></table></figure></p>
+<p>indexOf：与 findIndex 几乎完全相同，但它的参数不是一个函数，而是一个简单的值。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="string">'Nick'</span>, <span class="string">'Frank'</span>, <span class="string">'Joe'</span>, <span class="string">'Frank'</span>];</span><br><span class="line"><span class="keyword">const</span> foundIndex = arr.indexOf(<span class="string">'Frank'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(foundIndex);</span><br><span class="line"><span class="comment">// 1</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="push、pop、shift、unshift"><a href="#push、pop、shift、unshift" class="headerlink" title="push、pop、shift、unshift"></a>push、pop、shift、unshift</h3><p>push：这是一个相对简单的方法，它将一个项添加到数组的末尾。它就地修改数组，函数本身会返回添加到数组中的项。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];</span><br><span class="line"><span class="keyword">const</span> pushed = arr.push(<span class="number">5</span>);</span><br><span class="line"><span class="built_in">console</span>.log(arr);</span><br><span class="line"><span class="comment">// [1, 2, 3, 4, 5]</span></span><br><span class="line"><span class="built_in">console</span>.log(pushed);</span><br><span class="line"><span class="comment">// 5</span></span><br></pre></td></tr></table></figure></p>
+<p>pop：从数组中删除最后一项。同样，它也是就地修改数组。函数本身返回从数组中删除的项。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];</span><br><span class="line"><span class="keyword">const</span> popped = arr.pop();</span><br><span class="line"><span class="built_in">console</span>.log(arr);</span><br><span class="line"><span class="comment">// [1, 2, 3]</span></span><br><span class="line"><span class="built_in">console</span>.log(popped);</span><br><span class="line"><span class="comment">// 4</span></span><br></pre></td></tr></table></figure></p>
+<p>shift：从数组中删除第一个项。同样，它也是就地修改数组。函数本身返回从数组中删除的项。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];</span><br><span class="line"><span class="keyword">const</span> shifted = arr.shift();</span><br><span class="line"><span class="built_in">console</span>.log(arr);</span><br><span class="line"><span class="comment">// [2, 3, 4]</span></span><br><span class="line"><span class="built_in">console</span>.log(shifted);</span><br><span class="line"><span class="comment">// 1</span></span><br></pre></td></tr></table></figure></p>
+<p>unshift：将一个或多个元素添加到数组的开头。同样，它也是就地修改数组。与其他方法不同的是，函数本身返回数组最新的长度。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];</span><br><span class="line"><span class="keyword">const</span> unshifted = arr.unshift(<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>);</span><br><span class="line"><span class="built_in">console</span>.log(arr);</span><br><span class="line"><span class="comment">// [5, 6, 7, 1, 2, 3, 4]</span></span><br><span class="line"><span class="built_in">console</span>.log(unshifted);</span><br><span class="line"><span class="comment">// 7</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="splice、slice"><a href="#splice、slice" class="headerlink" title="splice、slice"></a>splice、slice</h3><p>splice：通过删除或替换现有元素或者添加新元素来修改数组的内容。这个方法也是就地修改数组。</p>
+<p>下面的代码示例的意思是：在数组的位置 1 上删除 0 个元素，并插入 b。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="string">'a'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>];</span><br><span class="line">arr.splice(<span class="number">1</span>, <span class="number">0</span>, <span class="string">'b'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>slice：从指定的起始位置和结束位置之前返回数组的浅拷贝。如果未指定结束位置，则返回数组的其余部分。这个方法不会修改数组，只是返回所需的子集。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>];</span><br><span class="line"><span class="keyword">const</span> sliced = arr.slice(<span class="number">2</span>, <span class="number">4</span>);</span><br><span class="line"><span class="built_in">console</span>.log(sliced);</span><br><span class="line"><span class="comment">// ['c', 'd']</span></span><br><span class="line"><span class="built_in">console</span>.log(arr);</span><br><span class="line"><span class="comment">// ['a', 'b', 'c', 'd', 'e']</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="sort"><a href="#sort" class="headerlink" title="sort"></a>sort</h3><p>sort：根据提供的函数对数组进行排序。这个方法就地修改数组。如果函数返回负数或 0，则顺序保持不变。如果返回正数，则交换元素顺序。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">-1</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">2</span>];</span><br><span class="line"><span class="keyword">const</span> sorter = <span class="function">(<span class="params">firstEl, secondEl</span>) =&gt;</span> firstEl - secondEl;</span><br><span class="line">arr.sort(sorter);</span><br><span class="line"><span class="built_in">console</span>.log(arr);</span><br><span class="line"><span class="comment">// [-1, 1, 2, 3, 5, 7, 7]</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="7-生成器"><a href="#7-生成器" class="headerlink" title="7. 生成器"></a>7. 生成器</h2><p>看到 * 不要害怕。生成器函数指定下一次调用 next() 时会生成什么 value。既可以生成有限数量的 value（最后调用 next() 会返回 undefined），也可以使用循环生成无限数量的 value。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>* <span class="title">greeter</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">yield</span> <span class="string">'Hi'</span>;</span><br><span class="line">  <span class="keyword">yield</span> <span class="string">'How are you?'</span>;</span><br><span class="line">  <span class="keyword">yield</span> <span class="string">'Bye'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> greet = greeter();</span><br><span class="line"><span class="built_in">console</span>.log(greet.next().value);</span><br><span class="line"><span class="comment">// 'Hi'</span></span><br><span class="line"><span class="built_in">console</span>.log(greet.next().value);</span><br><span class="line"><span class="comment">// 'How are you?'</span></span><br><span class="line"><span class="built_in">console</span>.log(greet.next().value);</span><br><span class="line"><span class="comment">// 'Bye'</span></span><br><span class="line"><span class="built_in">console</span>.log(greet.next().value);</span><br><span class="line"><span class="comment">// undefined</span></span><br></pre></td></tr></table></figure></p>
+<p>使用生成器生成无限个值：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>* <span class="title">idCreator</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> i = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">    <span class="keyword">yield</span> i++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> ids = idCreator();</span><br><span class="line"><span class="built_in">console</span>.log(ids.next().value);</span><br><span class="line"><span class="comment">// 0</span></span><br><span class="line"><span class="built_in">console</span>.log(ids.next().value);</span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="built_in">console</span>.log(ids.next().value);</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="comment">// etc...</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="8-与"><a href="#8-与" class="headerlink" title="8. === 与 =="></a>8. === 与 ==</h2><p>一定要知道 JavaScript 中 === 运算符和 == 运算符之间的区别！== 运算符在比较之前会进行类型转换，而 === 运算符在比较之前不会进行类型转换。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="number">0</span> == <span class="string">'0'</span>);</span><br><span class="line"><span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">0</span> === <span class="string">'0'</span>);</span><br><span class="line"><span class="comment">// false</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="9-对象比较"><a href="#9-对象比较" class="headerlink" title="9. 对象比较"></a>9. 对象比较</h2><p>JavaScript 新手容易犯的一个错误是直接比较对象。变量一般是指向内存中对象的引用，而不是对象本身！比较对象的一种方法是将它们转换成 JSON 字符串。但这样做有一个缺点：无法保证对象属性的顺序！一种更安全的方法是使用专门进行深度对象比较的库（例如 lodash 的 isEqual，<a href="https://lodash.com/docs#isEqual）。" target="_blank" rel="noopener">https://lodash.com/docs#isEqual）。</a></p>
+<p>下面的对象看起来相同，但它们实际上指向不同的引用。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> joe1 = &#123; <span class="attr">name</span>: <span class="string">'Joe'</span> &#125;;</span><br><span class="line"><span class="keyword">const</span> joe2 = &#123; <span class="attr">name</span>: <span class="string">'Joe'</span> &#125;;</span><br><span class="line"><span class="built_in">console</span>.log(joe1 === joe2);</span><br><span class="line"><span class="comment">// false</span></span><br></pre></td></tr></table></figure></p>
+<p>相反，下面的结果为 true，因为使用其中一个对象为另一个对象赋值，它们都指向相同的引用（内存中只有一个对象）。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> joe1 = &#123; <span class="attr">name</span>: <span class="string">'Joe'</span> &#125;;</span><br><span class="line"><span class="keyword">const</span> joe2 = joe1;</span><br><span class="line"><span class="built_in">console</span>.log(joe1 === joe2);</span><br><span class="line"><span class="comment">// true</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="10-回调函数"><a href="#10-回调函数" class="headerlink" title="10. 回调函数"></a>10. 回调函数</h2><p>很多人都被 JavaScript 回调函数吓倒了！它们其实很简单，请看下面的例子。console.log 函数作为回调传给 myFunc，并在 setTimeout 完成时执行。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myFunc</span>(<span class="params">text, callback</span>) </span>&#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    callback(text);</span><br><span class="line">  &#125;, <span class="number">2000</span>);</span><br><span class="line">&#125;</span><br><span class="line">myFunc(<span class="string">'Hello world!'</span>, <span class="built_in">console</span>.log);</span><br><span class="line"><span class="comment">// 'Hello world!'</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="11-promise"><a href="#11-promise" class="headerlink" title="11. promise"></a>11. promise</h2><p>一旦你理解了 JavaScript 回调，很快就会发现自己陷入了“回调地狱”中。这个时候可以使用 promise！将异步逻辑包装在 promise 中，使用“then”来处理成功的情况，使用“catch”来处理异常。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> myPromise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">res, rej</span>) </span>&#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">Math</span>.random() &lt; <span class="number">0.9</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> res(<span class="string">'Hooray!'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> rej(<span class="string">'Oh no!'</span>);</span><br><span class="line">  &#125;, <span class="number">1000</span>);</span><br><span class="line">&#125;);</span><br><span class="line">myPromise</span><br><span class="line">  .then(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Success: '</span> + data);</span><br><span class="line">   &#125;)</span><br><span class="line">   .catch(<span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Error: '</span> + err);</span><br><span class="line">   &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// If Math.random() returns less than 0.9 the following is logged:</span></span><br><span class="line"><span class="comment">// "Success: Hooray!"</span></span><br><span class="line"><span class="comment">// If Math.random() returns 0.9 or greater the following is logged:</span></span><br><span class="line"><span class="comment">// "Error: On no!"</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="12-Async-Await"><a href="#12-Async-Await" class="headerlink" title="12. Async/Await"></a>12. Async/Await</h2><p>在掌握了 promise 的用法后，你可能也会喜欢 async await，它只是一种基于 promise 的“语法糖”。在下面的示例中，我们创建了一个 async 函数，并 await greeter promise。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> greeter = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> res(<span class="string">'Hello world!'</span>), <span class="number">2000</span>);</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">myFunc</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> greeting = <span class="keyword">await</span> greeter;</span><br><span class="line">  <span class="built_in">console</span>.log(greeting);</span><br><span class="line">&#125;</span><br><span class="line">myFunc();</span><br><span class="line"><span class="comment">// 'Hello world!'</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://mp.weixin.qq.com/s/lv55kP8MUboteMkV9basoQ" target="_blank" rel="noopener">原文地址</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019-03-01-对象的浅复制与深复制/" rel="next" title="对象的浅复制与深复制">
+                <i class="fa fa-chevron-left"></i> 对象的浅复制与深复制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019-03-01-数组扁平化/" rel="prev" title="数组扁平化">
+                数组扁平化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/assets/200x200.png" alt="正月初五">
+            
+              <p class="site-author-name" itemprop="name">正月初五</p>
+              <p class="site-description motion-element" itemprop="description">实践总结 知识梳理 读书笔记</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">99</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/jovysun" title="GitHub &rarr; https://github.com/jovysun" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:jovysun@163.com" title="E-Mail &rarr; mailto:jovysun@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#详述"><span class="nav-number">2.</span> <span class="nav-text">详述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-变量赋值（值与引用）"><span class="nav-number">2.1.</span> <span class="nav-text">1. 变量赋值（值与引用）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-闭包"><span class="nav-number">2.2.</span> <span class="nav-text">2. 闭包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-解构"><span class="nav-number">2.3.</span> <span class="nav-text">3. 解构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-展开（spread）语法"><span class="nav-number">2.4.</span> <span class="nav-text">4. 展开（spread）语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-变长参数（rest）语法"><span class="nav-number">2.5.</span> <span class="nav-text">5. 变长参数（rest）语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-数组方法"><span class="nav-number">2.6.</span> <span class="nav-text">6. 数组方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#map、filter、reduce"><span class="nav-number">2.6.1.</span> <span class="nav-text">map、filter、reduce</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#find、findIndex、indexOf"><span class="nav-number">2.6.2.</span> <span class="nav-text">find、findIndex、indexOf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#push、pop、shift、unshift"><span class="nav-number">2.6.3.</span> <span class="nav-text">push、pop、shift、unshift</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#splice、slice"><span class="nav-number">2.6.4.</span> <span class="nav-text">splice、slice</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sort"><span class="nav-number">2.6.5.</span> <span class="nav-text">sort</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-生成器"><span class="nav-number">2.7.</span> <span class="nav-text">7. 生成器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-与"><span class="nav-number">2.8.</span> <span class="nav-text">8. === 与 ==</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-对象比较"><span class="nav-number">2.9.</span> <span class="nav-text">9. 对象比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-回调函数"><span class="nav-number">2.10.</span> <span class="nav-text">10. 回调函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-promise"><span class="nav-number">2.11.</span> <span class="nav-text">11. promise</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-Async-Await"><span class="nav-number">2.12.</span> <span class="nav-text">12. Async/Await</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">正月初五</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'kwRsvUOXclo28PbRHx4yx9gb-gzGzoHsz',
+    appKey: 'b1IwY2KUEiMwBO2lRLehboPT',
+    placeholder: 'Just go go',
+    avatar: '',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+      }
+      else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

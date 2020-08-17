@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/32x32.ico?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/32x32.ico?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/16x16.ico?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/assets/32x32.ico?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言在仅可输入英文字符的输入框内填写中文或其他语言的字符时，会给出报错。如果用户在复制进大段文字中夹杂了少许中文标点符，那么很难排查。因此，需要在原有校验基础上进行交互改进：失焦后标点符号自动转换，还有不能转换的给出提示框，同意则自动删除非法字符，取消则关闭提示框，用户手动修改。 概述这是结合jquery 的 validate 表单验证插件及已有的 UI 组件进行的表单输入框交互改进方案。因此，如">
+<meta name="keywords" content="实战">
+<meta property="og:type" content="article">
+<meta property="og:title" content="英文输入框字符纠正">
+<meta property="og:url" content="http://hellojovy.com/2018-09-19-x2en/index.html">
+<meta property="og:site_name" content="程序收纳">
+<meta property="og:description" content="前言在仅可输入英文字符的输入框内填写中文或其他语言的字符时，会给出报错。如果用户在复制进大段文字中夹杂了少许中文标点符，那么很难排查。因此，需要在原有校验基础上进行交互改进：失焦后标点符号自动转换，还有不能转换的给出提示框，同意则自动删除非法字符，取消则关闭提示框，用户手动修改。 概述这是结合jquery 的 validate 表单验证插件及已有的 UI 组件进行的表单输入框交互改进方案。因此，如">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://hellojovy.com/2018-09-19-x2en/x2en.gif">
+<meta property="og:updated_time" content="2018-09-19T02:49:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="英文输入框字符纠正">
+<meta name="twitter:description" content="前言在仅可输入英文字符的输入框内填写中文或其他语言的字符时，会给出报错。如果用户在复制进大段文字中夹杂了少许中文标点符，那么很难排查。因此，需要在原有校验基础上进行交互改进：失焦后标点符号自动转换，还有不能转换的给出提示框，同意则自动删除非法字符，取消则关闭提示框，用户手动修改。 概述这是结合jquery 的 validate 表单验证插件及已有的 UI 组件进行的表单输入框交互改进方案。因此，如">
+<meta name="twitter:image" content="http://hellojovy.com/2018-09-19-x2en/x2en.gif">
+
+
+
+
+
+
+  <link rel="canonical" href="http://hellojovy.com/2018-09-19-x2en/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>英文输入框字符纠正 | 程序收纳</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?78f30df6d38dd3bab6d88c9c5d807833";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">程序收纳</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">写给自己看的博客</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hellojovy.com/2018-09-19-x2en/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="正月初五">
+      <meta itemprop="description" content="实践总结 知识梳理 读书笔记">
+      <meta itemprop="image" content="/assets/200x200.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程序收纳">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">英文输入框字符纠正
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-09-19 10:49:13" itemprop="dateCreated datePublished" datetime="2018-09-19T10:49:13+08:00">2018-09-19</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/其他/" itemprop="url" rel="index"><span itemprop="name">其他</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <a href="/2018-09-19-x2en/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018-09-19-x2en/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在仅可输入英文字符的输入框内填写中文或其他语言的字符时，会给出报错。如果用户在复制进大段文字中夹杂了少许中文标点符，那么很难排查。因此，需要在原有校验基础上进行交互改进：失焦后标点符号自动转换，还有不能转换的给出提示框，同意则自动删除非法字符，取消则关闭提示框，用户手动修改。</p>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>这是结合<a href="https://jqueryvalidation.org/" target="_blank" rel="noopener">jquery 的 validate 表单验证插件</a>及已有的 UI 组件进行的表单输入框交互改进方案。因此，如果不是 validate 框架则要重写 js 方法，如果是自定义的提示框结构样式，则需要添加相应的钩子：<code>.J-x2en-contianer/.J-x2en-feedback/.J-m-tip/.J-show-btn/.J-confirm-btn/.J-cancel-btn</code>。</p>
+<h2 id="效果展示"><a href="#效果展示" class="headerlink" title="效果展示"></a>效果展示</h2><p><img src="/2018-09-19-x2en/x2en.gif" alt="效果展示"></p>
+<a id="more"></a>
+<h1 id="详述"><a href="#详述" class="headerlink" title="详述"></a>详述</h1><p>html 代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;form-item&quot;&gt;</span><br><span class="line">    &lt;label class=&quot;form-label&quot;&gt;remark:&lt;/label&gt;</span><br><span class="line"></span><br><span class="line">    &lt;div class=&quot;form-fields&quot;&gt;</span><br><span class="line">        &lt;div class=&quot;col-9&quot;&gt;</span><br><span class="line">            &lt;textarea name=&quot;remark&quot; placeholder=&quot;&quot; class=&quot;input-text input-description&quot;&gt;&lt;/textarea&gt;</span><br><span class="line">            &lt;div class=&quot;feedback-block auto-en-feedback J-x2en-feedback&quot; wrapfor=&quot;remark&quot;&gt;</span><br><span class="line">                &lt;div class=&quot;auto-en-extra&quot;&gt;</span><br><span class="line">                    &lt;a href=&quot;javascript:void(0)&quot; class=&quot;J-show-btn&quot;&gt;Not found?&lt;/a&gt;</span><br><span class="line">                    &lt;div class=&quot;m-tip arrow-bottom J-m-tip&quot;&gt;</span><br><span class="line">                        &lt;div class=&quot;tip-con&quot;&gt;</span><br><span class="line">                            The system will help you to delete non-English characters. Are you sure to continue?&lt;br&gt;</span><br><span class="line">                            &lt;a href=&quot;javascript:void(0);&quot; class=&quot;btn btn-main J-confirm-btn&quot;&gt;Confirm&lt;/a&gt;</span><br><span class="line">                            &lt;a href=&quot;javascript:void(0);&quot; class=&quot;btn J-cancel-btn&quot;&gt;Cancel&lt;/a&gt;</span><br><span class="line">                        &lt;/div&gt;</span><br><span class="line">                        &lt;div class=&quot;arrow arrow-out&quot;&gt;</span><br><span class="line">                            &lt;span class=&quot;arrow arrow-in&quot;&gt;&lt;/span&gt;</span><br><span class="line">                        &lt;/div&gt;</span><br><span class="line">                    &lt;/div&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">            &lt;/div&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<p>validate 扩展方法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 非英文标点符号自动转成英文标点符号，如果还有无法转化的，则给出报错提示。</span><br><span class="line"> */</span><br><span class="line">$.validator.addMethod(&quot;x2en&quot;, function (val, ele, params) &#123;</span><br><span class="line">    // 非英文不包含特殊符号正则</span><br><span class="line">    var reg = /[^\x00-\x9f\xa1-\xff\u0000-\u009f\u00a1-\u00ff\u0021-\u002c\u002e\u002f\u003a-\u0040\u0043\u0046\u005b-\u0060\u007b-\u007d\u00a1-\u00ac\u00ae-\u0113\u0116-\u0122\u0124-\u012b\u012e-\u014d\u0150-\u017e\u0192\u01b5\u01f5\u0237\u02c6\u02c7\u02d8-\u02dd\u0311\u0391-\u03a1\u03a3-\u03a9\u03b1-\u03c9\u03d1\u03d2\u03d5\u03d6\u03dc\u03dd\u03f0\u03f1\u03f5\u03f6\u0401-\u040c\u040e-\u044f\u0451-\u045c\u045e\u045f\u2010\u2013\u2015\u2016\u2018-\u201a\u201c-\u201e\u2020-\u2022\u2025\u2026\u2030-\u2035\u2039\u203a\u203e\u2041\u2043\u2044\u20ac\u20db\u20dc\u2102\u2105\u210a-\u2113\u2115-\u211e\u2122\u2124\u2127-\u2129\u212c\u212d\u212f-\u2131\u2133-\u2138\u2153-\u215e\u2190-\u219b\u219d-\u21a7\u21a9-\u21ae\u21b0-\u21b3\u21b5-\u21b7\u21ba-\u21db\u21dd\u21e4\u21e5\u2200-\u2205\u2207-\u2209\u220b\u220c\u220f-\u2214\u2216-\u2218\u221a\u221d-\u2238\u223a-\u2257\u2259\u225a\u225c\u225f-\u2262\u2264-\u228b\u228d-\u229b\u229d-\u22a5\u22a7-\u22b0\u22b2-\u22bb\u22bd-\u22db\u22de-\u22e3\u22e6-\u22f1\u2305\u2306\u2308-\u2310\u2312\u2313\u2315\u2316\u231c-\u231f\u2322\u2323\u232d\u232e\u2336\u233d\u233f\u2423\u24c8\u2500\u2502\u250c\u2510\u2514\u2518\u251c\u2524\u252c\u2534\u253c\u2550-\u256c\u2580\u2584\u2588\u2591-\u2593\u25aa\u25ab\u25ad\u25ae\u25b1\u25b3-\u25b5\u25b8\u25b9\u25bd-\u25bf\u25c2\u25c3\u25ca\u25cb\u25ec\u25ef\u2605\u2606\u260e\u2640\u2642\u2660\u2663\u2665\u2666\u266a\u266d-\u266f\u2713\u2717\u2720\u2736\u2758\u2772\u2773\u2935\u2985\u2986\u29bf\u2a00-\u2a02\u2a04\u2a06\u2a0c\u2a0d\u2a10-\u2a17\u2a22-\u2a27\u2a29\u2a2a\u2a2d-\u2a31\u2a33-\u2a3c\u2a3f\u2a40\u2a42-\u2a4d\u2a50\u2a53-\u2a58\u2a5a-\u2a5d\u2a5f\u2a66\u2a6a\u2a6d-\u2a75\u2a77-\u2a9a\u2a9d-\u2aa2\u2aa4-\u2ab0\u2ab3-\u2ac8\u2acb\u2acc\u2acf-\u2adb\u2ae4\u2ae6-\u2ae9\u2aeb-\u2af3\u2afd\ufb00-\ufb04]/g;</span><br><span class="line"></span><br><span class="line">    var $input = $(ele),</span><br><span class="line">        $container = $input.parents(&apos;.J-x2en-contianer&apos;).length &gt; 0 ? $input.parents(&apos;.J-x2en-contianer&apos;) : $input.parents(&apos;.form-item&apos;),</span><br><span class="line">        $autoEnExtra = $container.find(&apos;.J-x2en-feedback&apos;),</span><br><span class="line">        $tip = $autoEnExtra.find(&apos;.J-m-tip&apos;);</span><br><span class="line">    // 中文符号及其他全角符号转成英文及半角符号，规则同富文本</span><br><span class="line">    var CnToEn = function (cdata) &#123;</span><br><span class="line">        var replaceString = new Array(/｀/g, &quot;`&quot;, /～/g, &quot;~&quot;, /！/g, &quot;!&quot;, /＃/g, &quot;#&quot;, /＄/g, &quot;$&quot;, /％/g, &quot;%&quot;, /（/g, &quot;(&quot;, /）/g, &quot;)&quot;, /“/g, &quot;\&quot;&quot;, /”/g, &quot;\&quot;&quot;, /；/g, &quot;;&quot;, /：/g, &quot;:&quot;, /，/g, &quot;,&quot;, /。|．/g, &quot;.&quot;, /？/g, &quot;?&quot;, / /g, &quot; &quot;, /＇/g, &quot;&apos;&quot;, /‘/g, &quot;&apos;&quot;, /’/g, &quot;&apos;&quot;, /／/g, &quot;/&quot;, /＂/g, &quot;\&quot;&quot;, /＜/g, &quot;&lt;&quot;, /＞/g, &quot;&gt;&quot;, /＊/g, &quot;*&quot;, /＆/g, &quot;&amp;&quot;, /＠/g, &quot;@&quot;, /＾/g, &quot;^&quot;, /＋/g, &quot;+&quot;, /｜/g, &quot;|&quot;, /＼/g, &quot;\\&quot;, /．/g, &quot;.&quot;, /＿/g, &quot;_&quot;, /＝/g, &quot;=&quot;, /－/g, &quot;-&quot;, /……/g, &quot;...&quot;, /１/g, &quot;1&quot;, /２/g, &quot;2&quot;, /３/g, &quot;3&quot;, /４/g, &quot;4&quot;, /５/g, &quot;5&quot;, /６/g, &quot;6&quot;, /７/g, &quot;7&quot;, /８/g, &quot;8&quot;, /９/g, &quot;9&quot;, /０/g, &quot;0&quot;, /、/g, &quot;,&quot;, /｛/g, &quot;&#123;&quot;, /｝/g, &quot;&#125;&quot;, /［/g, &quot;[&quot;, /］/g, &quot;]&quot;, /Ａ/g, &quot;A&quot;, /Ｂ/g, &quot;B&quot;, /Ｃ/g, &quot;C&quot;, /Ｄ/g, &quot;D&quot;, /Ｅ/g, &quot;E&quot;, /Ｆ/g, &quot;F&quot;, /Ｇ/g, &quot;G&quot;, /Ｈ/g, &quot;H&quot;, /Ｉ/g, &quot;I&quot;, /Ｊ/g, &quot;J&quot;, /Ｋ/g, &quot;K&quot;, /Ｌ/g, &quot;L&quot;, /Ｍ/g, &quot;M&quot;, /Ｎ/g, &quot;N&quot;, /Ｏ/g, &quot;O&quot;, /Ｐ/g, &quot;P&quot;, /Ｑ/g, &quot;Q&quot;, /Ｒ/g, &quot;R&quot;, /Ｓ/g, &quot;S&quot;, /Ｔ/g, &quot;T&quot;, /Ｕ/g, &quot;U&quot;, /Ｖ/g, &quot;V&quot;, /Ｗ/g, &quot;W&quot;, /Ｘ/g, &quot;X&quot;, /Ｙ/g, &quot;Y&quot;, /Ｚ/g, &quot;Z&quot;, /ａ/g, &quot;a&quot;, /ｂ/g, &quot;b&quot;, /ｃ/g, &quot;c&quot;, /ｄ/g, &quot;d&quot;, /ｅ/g, &quot;e&quot;, /ｆ/g, &quot;f&quot;, /ｇ/g, &quot;g&quot;, /ｈ/g, &quot;h&quot;, /ｉ/g, &quot;i&quot;, /ｊ/g, &quot;j&quot;, /ｋ/g, &quot;k&quot;, /ｌ/g, &quot;l&quot;, /ｍ/g, &quot;m&quot;, /ｎ/g, &quot;n&quot;, /ｏ/g, &quot;o&quot;, /ｐ/g, &quot;p&quot;, /ｑ/g, &quot;q&quot;, /ｒ/g, &quot;r&quot;, /ｓ/g, &quot;s&quot;, /ｔ/g, &quot;t&quot;, /ｕ/g, &quot;u&quot;, /ｖ/g, &quot;v&quot;, /ｗ/g, &quot;w&quot;, /ｘ/g, &quot;x&quot;, /ｙ/g, &quot;y&quot;, /ｚ/g, &quot;z&quot;,/—/g,&quot;-&quot;,/–/g,&quot;-&quot;);</span><br><span class="line">        for (i = 0; i &lt; replaceString.length; i = i + 2) &#123;</span><br><span class="line">            cdata = cdata.replace(replaceString[i], replaceString[i + 1]);</span><br><span class="line">        &#125;</span><br><span class="line">        return cdata;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    var result = CnToEn(val);</span><br><span class="line">    $(ele).val(result);</span><br><span class="line"></span><br><span class="line">    if(reg.test(result)) &#123;</span><br><span class="line">        $autoEnExtra.on(&apos;click&apos;, &apos;.J-show-btn&apos;, function()&#123;</span><br><span class="line">            $tip.show();</span><br><span class="line">        &#125;);</span><br><span class="line">        $autoEnExtra.on(&apos;click&apos;, &apos;.J-confirm-btn&apos;, function()&#123;</span><br><span class="line">            result = result.replace(reg, &apos;&apos;);</span><br><span class="line">            $(ele).val(result).valid();</span><br><span class="line">            $tip.hide();</span><br><span class="line">        &#125;);</span><br><span class="line">        $autoEnExtra.on(&apos;click&apos;, &apos;.J-cancel-btn&apos;, function()&#123;</span><br><span class="line">            $tip.hide();</span><br><span class="line">        &#125;);</span><br><span class="line">        $autoEnExtra.show();</span><br><span class="line">        return false;</span><br><span class="line">    &#125;else &#123;</span><br><span class="line">        $autoEnExtra.hide();</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/实战/" rel="tag"># 实战</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018-2018-08-07-delaunay-5/" rel="next" title="三角碎片动效（五）——焦点图轮播示例">
+                <i class="fa fa-chevron-left"></i> 三角碎片动效（五）——焦点图轮播示例
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018-2018-12-18-JS高设3版-1/" rel="prev" title="JavaScript简介（《JavaScript高级程序设计》）">
+                JavaScript简介（《JavaScript高级程序设计》） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/assets/200x200.png" alt="正月初五">
+            
+              <p class="site-author-name" itemprop="name">正月初五</p>
+              <p class="site-description motion-element" itemprop="description">实践总结 知识梳理 读书笔记</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">99</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/jovysun" title="GitHub &rarr; https://github.com/jovysun" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:jovysun@163.com" title="E-Mail &rarr; mailto:jovysun@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">2.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#效果展示"><span class="nav-number">2.1.</span> <span class="nav-text">效果展示</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#详述"><span class="nav-number">3.</span> <span class="nav-text">详述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#后记"><span class="nav-number">4.</span> <span class="nav-text">后记</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">正月初五</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'kwRsvUOXclo28PbRHx4yx9gb-gzGzoHsz',
+    appKey: 'b1IwY2KUEiMwBO2lRLehboPT',
+    placeholder: 'Just go go',
+    avatar: '',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+      }
+      else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
