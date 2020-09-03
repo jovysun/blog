@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://hellojovy.com/browser-enter-url/</loc>
+    
+    <lastmod>2020-09-02T08:09:28.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://hellojovy.com/nodejs-local-virtual-host/</loc>
     
     <lastmod>2020-08-24T10:57:49.000Z</lastmod>
